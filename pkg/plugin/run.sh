@@ -29,21 +29,21 @@ die() {
   exit "$code"
 }
 
-# Set default values
-flag=0
-param="default_value"
-args=("./")
+# Ensure that a file path is provided as an argument
+if [[ $# -lt 1 ]]; then
+  die "${RED}Error: No file path provided${NOFORMAT}"
+fi
+
+file_path="$1"
 
 setup_colors
 
 # Core script logic here
-msg "${BLUE}Running script with the following values:${NOFORMAT}"
-msg "- flag: ${flag}"
-msg "- param: ${param}"
-msg "- arguments: ${args[*]-}"
+msg "${BLUE}Running script with the following file path:${NOFORMAT} $file_path"
 
-# Add your script logic below this
-# Example logic:
-ls "${args[*]-}"
-
-
+# Check if the file exists
+if [[ -f "$file_path" ]]; then
+  msg "${GREEN}File exists: $file_path${NOFORMAT}"
+else
+  msg "${RED}File does not exist: $file_path${NOFORMAT}"
+fi

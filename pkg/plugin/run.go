@@ -8,14 +8,13 @@ import (
 	"strings"
 
 	pluginInterface "github.com/StandardRunbook/plugin-interface"
-	"github.com/StandardRunbook/plugin-template-go/app/config"
+	"github.com/StandardRunbook/test-file-exists/pkg/config"
 )
 
 //go:embed run.sh
 var runScript []byte
 
-// Template is a placeholder - please change to be unique to your plugin name
-type Template struct {
+type FileCheck struct {
 	name           string
 	version        string
 	arguments      []string
@@ -23,15 +22,15 @@ type Template struct {
 	expectedOutput string
 }
 
-func (t *Template) Name() string {
+func (t *FileCheck) Name() string {
 	return t.name
 }
 
-func (t *Template) Version() string {
+func (t *FileCheck) Version() string {
 	return t.version
 }
 
-func (t *Template) Run() error {
+func (t *FileCheck) Run() error {
 	// Step 1: Create a temporary file
 	tmpFile, err := os.CreateTemp("", "script-*.sh")
 	if err != nil {
@@ -57,8 +56,12 @@ func (t *Template) Run() error {
 		return fmt.Errorf("failed to set executable permissions on file: %w", err)
 	}
 
+	if len(t.arguments) == 0 {
+		return fmt.Errorf("no file path provided")
+	}
+
 	// Step 5: Execute the script
-	cmd := exec.Command(tmpFile.Name(), t.arguments...)
+	cmd := exec.Command("/bin/bash", tmpFile.Name(), t.arguments[0])
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return fmt.Errorf("error executing script: %w", err)
@@ -67,15 +70,15 @@ func (t *Template) Run() error {
 	return nil
 }
 
-func (t *Template) ParseOutput() string {
+func (t *FileCheck) ParseOutput() string {
 	if strings.Contains(t.output, t.expectedOutput) {
 		return "success"
 	}
 	return "failure"
 }
 
-func NewPluginTemplate(cfg *config.Config) pluginInterface.IPlugin {
-	return &Template{
+func NewFileCheckPlugin(cfg *config.Config) pluginInterface.IPlugin {
+	return &FileCheck{
 		name:           cfg.Name,
 		version:        cfg.Version,
 		arguments:      cfg.ScriptArguments,

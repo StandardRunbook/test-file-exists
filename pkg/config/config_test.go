@@ -1,9 +1,9 @@
 package config_test
 
 import (
-	"github.com/StandardRunbook/plugin-template-go/app/config"
 	"testing"
 
+	"github.com/StandardRunbook/test-file-exists/pkg/config"
 	"github.com/stretchr/testify/require"
 )
 
