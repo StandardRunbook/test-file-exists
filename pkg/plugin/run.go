@@ -77,7 +77,7 @@ func (t *FileCheck) ParseOutput() string {
 	return "failure"
 }
 
-func NewFileCheckPlugin(cfg *config.Config) pluginInterface.IPlugin {
+func NewFileCheckPlugin(cfg *config.FileCheckConfig) pluginInterface.IPlugin {
 	return &FileCheck{
 		name:           cfg.Name,
 		version:        cfg.Version,

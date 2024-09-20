@@ -10,7 +10,7 @@ import (
 
 func TestTemplate_Run(t *testing.T) {
 	t.Parallel()
-	cfg := &config.Config{
+	cfg := &config.FileCheckConfig{
 		Name:            "test-file-exists",
 		Version:         "v1.0.0",
 		ExpectedOutput:  "File exists: ./run.sh",

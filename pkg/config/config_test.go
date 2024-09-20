@@ -13,7 +13,7 @@ func TestLoadConfigArguments(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, cfg)
 
-	expectedConfig := &config.Config{
+	expectedConfig := &config.FileCheckConfig{
 		Name:           "PeriodicTrigger",
 		Version:        "v1.0.0",
 		ExpectedOutput: "run.go run.sh run_test.go",
